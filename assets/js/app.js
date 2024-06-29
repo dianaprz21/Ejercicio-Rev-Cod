@@ -1,30 +1,30 @@
 const baseEndpoint = 'https://api.github.com';
 const usersEndpoint = `${baseEndpoint}/users`;
-const $n = document.querySelector('name');
-const $b = document.querySelector('blog');
-const $l = document.querySelector('location');
+const $n = document.querySelector('.name'); 
+const $b = document.querySelector('.blog');
+const $l = document.querySelector('.location');
+// Corregí la manera de seleccionar la información que buscaba
 
 async function displayUser(username) {
-  const response = await fetch(`${usersEndpoint}/${username}`);
-  console.log(response);
+  $n.textContent = 'cargando...';
+  try{
+    const response = await fetch(`${usersEndpoint}/${username}`);
+  const data = await response.json(); // Se necesitaba convertir la respuesta a json
+  console.log(data);
+  $n.textContent = `${data.name}`;
+  $b.textContent = `${data.blog}`;
+  $l.textContent = `${data.location}`; //Aquí se estaban usando comillas simples y las cambié a template literals
+  }catch(err){
+    handleError(err);
+  }
+//Agregué el try catch, así se evita querer llamarla en la línea 29
+
 }
 
 function handleError(err) {
   console.log('OH NO!');
   console.log(err);
-  n.textContent = `Algo salió mal: ${err}`
+  $n.textContent = `Algo salió mal: ${err}`; // Estaba mal escrita la variable $n
 }
 
-displayUser('stolinski').catch(handleError);
-
-/* 
-    Intenté modificar la función, la hice asíncrona porque tenía
-    el await, pero no logré comprender como se usan las variables
-    de $n, $b y $1.
-    De hecho le cambié lo que está en los parentesis de los "querySelector"
-    porque ví que tenian que ver con la manera de acceder a los datos, 
-    pero aún así no supe utilizarlas.
-
-    Pero ya no marca errores y creo que sí accede a los datos de "stolinsky":D
-
-*/
+displayUser('stolinski');
